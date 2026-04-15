@@ -40,9 +40,7 @@ correo varchar(50) not null UNIQUE,
 pass varchar(25) not null,
 RNC varchar(20) not null,
 descripcion varchar (100),
-contacto varchar(25),
-rol_id INT,
-FOREIGN KEY (rol_id) REFERENCES roles(id)
+estado ENUM('activa','desactiva') default 'activa'
 
 );
 
@@ -51,7 +49,7 @@ FOREIGN KEY (rol_id) REFERENCES roles(id)
 CREATE TABLE vacantes (
 
 id int primary key auto_increment,
-id_empresa int,
+id_empresa int NOT NULL,
 titulo varchar(20) not null,
 descripcion varchar(150),
 salario decimal (10,2) not null,
@@ -73,7 +71,8 @@ fecha_postulacion date,
 estatus ENUM('pendiente', 'aceptado', 'rechazado') default 'pendiente',
 
 FOREIGN KEY(id_vacante) REFERENCES vacantes(id),
-FOREIGN KEY(id_usuario) REFERENCES usuarios(id)
+FOREIGN KEY(id_usuario) REFERENCES usarios (id)
+
 );
 
 /*Tabla para las contrataciones, servira como reporte para conocer las contrataciones hechas*/
