@@ -37,19 +37,19 @@ import com.empleo.usuarios.Usuario;
 	            if (u.getRol_id() == 2) {
 	            	
 	            	System.out.println("Accediste como Administrador");
-	            	response.sendRedirect(request.getContextPath() + "/VISTA/paginaPrincipalAdm.jsp");
+	            	response.sendRedirect(request.getContextPath() + "/vista/paginaPrincipalAdm.jsp");
 					
 				} else {
 					
 					System.out.println("Accediste como usuario");
-	            	response.sendRedirect(request.getContextPath() + "/VISTA/paginaPrincipalUsuario.jsp");
+	            	response.sendRedirect(request.getContextPath() + "/vista/paginaPrincipalUsuario.jsp");
 				}
 	       
 	        } else {
 
 	        	request.setAttribute("loginError", true);
 	        	request.setAttribute("correoIngresado", request.getParameter("correo"));
-	        	request.getRequestDispatcher("/VISTA/loginPageUsuario.jsp").forward(request, response);
+	        	request.getRequestDispatcher("/vista/loginPageUsuario.jsp").forward(request, response);
 	        }
 	
 

@@ -135,7 +135,7 @@
 
       <div class="text-center divider">
         <span style="font-size:13px; color:#888;">¿No tienes cuenta? </span>
-        <a href="${pageContext.request.contextPath}/VISTA/paginaPrincipal.jsp"
+        <a href="${pageContext.request.contextPath}/vista/paginaPrincipal.jsp"
           style="font-size:13px; color:#185fa5; font-weight:500; text-decoration:none;">Regístrate</a>
       </div>
 

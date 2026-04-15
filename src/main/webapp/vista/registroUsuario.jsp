@@ -137,7 +137,7 @@
 
       <div class="text-center divider">
         <span style="font-size:13px; color:#888;">¿Ya tienes cuenta? </span>
-        <a href="${pageContext.request.contextPath}/VISTA/loginPageUsuario.jsp" style="font-size:13px; color:#185fa5; font-weight:500; text-decoration:none;">Inicia sesión</a>
+        <a href="${pageContext.request.contextPath}/vista/loginPageUsuario.jsp" style="font-size:13px; color:#185fa5; font-weight:500; text-decoration:none;">Inicia sesión</a>
       </div>
 
     </form>

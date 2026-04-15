@@ -53,7 +53,7 @@
         </p>
         
         <button class="btn btn-login"
-      	onclick="window.location.href='${pageContext.request.contextPath}/VISTA/loginPageUsuario.jsp'">
+      	onclick="window.location.href='${pageContext.request.contextPath}/vista/loginPageUsuario.jsp'">
       	Ir a inicio de sesión
     	</button>
 

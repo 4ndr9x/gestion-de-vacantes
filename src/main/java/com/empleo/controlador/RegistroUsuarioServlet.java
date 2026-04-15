@@ -43,6 +43,6 @@ public class RegistroUsuarioServlet extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("nombreUsuario", nombre);
         
-        response.sendRedirect(request.getContextPath() + "/VISTA/registroExitoso.jsp");
+        response.sendRedirect(request.getContextPath() + "/vista/registroExitoso.jsp");
     }
 }
