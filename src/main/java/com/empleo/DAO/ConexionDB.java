@@ -12,7 +12,7 @@ public class ConexionDB {
 	// private static String usuarioRemoto = "programa";
 	
 	private static String urlLocal = "jdbc:mysql://localhost:3306/proyectofinal?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-	private static String usuarioLocal = "root";
+	private static String usuarioLocal = "programa";
 	private static String password = "hola2332";
 	
 	public static Connection conectar() {

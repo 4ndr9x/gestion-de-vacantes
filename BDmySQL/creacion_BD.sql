@@ -88,4 +88,11 @@ comision decimal(10,2),
 FOREIGN KEY(id_postulacion) REFERENCES postulaciones(id)
 );
 
+-- 1. Crear el usuario para la conexión de la aplicación (cambia la contraseña por una de tu preferencia)
+CREATE USER 'programa'@'localhost' IDENTIFIED BY 'hola2332';
 
+-- 2. Otorgar los permisos necesarios SOLO sobre la base de datos del proyecto
+GRANT SELECT, INSERT, UPDATE, DELETE ON proyectofinal.* TO 'programa'@'localhost';
+
+-- 3. Aplicar los cambios de privilegios
+FLUSH PRIVILEGES;
