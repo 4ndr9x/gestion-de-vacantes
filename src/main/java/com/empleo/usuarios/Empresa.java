@@ -1,0 +1,81 @@
+package com.empleo.usuarios;
+
+public class Empresa {
+	
+	private String nombre;
+	private String correo;
+	private String password;
+	private String rnc;
+	private String descripcion;
+	private String contacto;
+	private int rol_id;
+	
+	public Empresa(String nombre, String correo, String password, String rnc, String descripcion, String contacto,
+			int rol_id) {
+	
+		this.nombre = nombre;
+		this.correo = correo;
+		this.password = password;
+		this.rnc = rnc;
+		this.descripcion = descripcion;
+		this.contacto = contacto;
+		this.rol_id = rol_id;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public int getRol_id() {
+		return rol_id;
+	}
+
+	public void setRol_id(int rol_id) {
+		this.rol_id = rol_id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getRnc() {
+		return rnc;
+	}
+
+	public void setRnc(String rnc) {
+		this.rnc = rnc;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public String getContacto() {
+		return contacto;
+	}
+
+	public void setContacto(String contacto) {
+		this.contacto = contacto;
+	}
+	
+}
