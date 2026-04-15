@@ -37,7 +37,6 @@ CREATE TABLE empresas (
 id int primary key auto_increment,
 nombre varchar(20) not null,
 correo varchar(50) not null UNIQUE,
-pass varchar(25) not null,
 RNC varchar(20) not null,
 descripcion varchar (100),
 estado ENUM('activa','desactiva') default 'activa'
