@@ -9,6 +9,7 @@ public class Empresa {
 	private String descripcion;
 	private String contacto;
 	private int rol_id;
+	private String estado;
 	
 	public Empresa(String nombre, String correo, String password, String rnc, String descripcion, String contacto,
 			int rol_id) {
@@ -77,5 +78,15 @@ public class Empresa {
 	public void setContacto(String contacto) {
 		this.contacto = contacto;
 	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+	
+	
 	
 }

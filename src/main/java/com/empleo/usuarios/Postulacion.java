@@ -10,6 +10,16 @@ public class Postulacion {
 	private Date fechaPostulacion;
 	private String estatus;
 	
+	
+	
+	public Postulacion(int id, Vacante vacante, Usuario usuario, Date fechaPostulacion, String estatus) {
+		this.id = id;
+		this.vacante = vacante;
+		this.usuario = usuario;
+		this.fechaPostulacion = fechaPostulacion;
+		this.estatus = estatus;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -37,7 +47,7 @@ public class Postulacion {
 		this.usuario= usuario;
 	}
 	
-	public int getFechaPostulacion() {
+	public Date getFechaPostulacion() {
 		return fechaPostulacion;
 	}
 	
@@ -46,11 +56,11 @@ public class Postulacion {
 		this.fechaPostulacion= fechaPostulacion;
 	}
 	
-	public int getEstatus() {
+	public String getEstatus() {
 		return estatus;
 	}
 	
-	public void setEstatus(String status) {
+	public void setEstatus(String estatus) {
 		
 		this.estatus=estatus;
 	}

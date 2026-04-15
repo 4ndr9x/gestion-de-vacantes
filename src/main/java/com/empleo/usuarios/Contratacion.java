@@ -10,6 +10,13 @@ public class Contratacion {
 	private Date fechaContratoDate;
 	private BigDecimal comision;
 	
+	public Contratacion(int id, Postulacion postulacion, Date fechaContratoDate, BigDecimal comision) {
+		this.id = id;
+		this.postulacion = postulacion;
+		this.fechaContratoDate = fechaContratoDate;
+		this.comision = comision;
+	}
+	
 	public int getId() {
 		return id;
 	}
