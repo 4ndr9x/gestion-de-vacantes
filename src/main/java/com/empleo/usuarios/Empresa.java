@@ -2,6 +2,7 @@ package com.empleo.usuarios;
 
 public class Empresa {
 	
+	private int id_empresa;
 	private String nombre;
 	private String correo;
 	private String password;
@@ -11,9 +12,10 @@ public class Empresa {
 	private int rol_id;
 	private String estado;
 	
-	public Empresa(String nombre, String correo, String password, String rnc, String descripcion, String contacto,
+	public Empresa(int id_empresa, String nombre, String correo, String password, String rnc, String descripcion, String contacto,
 			int rol_id) {
-	
+		
+		this.id_empresa = id_empresa;
 		this.nombre = nombre;
 		this.correo = correo;
 		this.password = password;
@@ -21,6 +23,10 @@ public class Empresa {
 		this.descripcion = descripcion;
 		this.contacto = contacto;
 		this.rol_id = rol_id;
+	}
+
+	public Empresa() {
+		
 	}
 
 	public String getCorreo() {
@@ -86,6 +92,15 @@ public class Empresa {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
+
+	public int getId_empresa() {
+		return id_empresa;
+	}
+
+	public void setId_empresa(int id_empresa) {
+		this.id_empresa = id_empresa;
+	}
+	
 	
 	
 	

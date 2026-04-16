@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.empleo.usuarios.Empresa;
 
 public class EmpresaDAO {
 	
@@ -34,89 +38,28 @@ public class EmpresaDAO {
 			e.printStackTrace();
 			
 		}
-		
 	}
 	
-	public static String buscarEmpresa(String correoLogin, String passwordLogin) {
-
-	    String consultaSQL = "SELECT * FROM proyectofinal.empresas WHERE correo = ?";
-
-	    try (Connection conexionDB = ConexionDB.conectar();
-	         PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL)) {
-
-	        consultaFinal.setString(1, correoLogin);
-	        ResultSet resultadoDB = consultaFinal.executeQuery();
-
-	        if (resultadoDB.next()) {
-	            String passRef   = resultadoDB.getString("pass");
-	            String nombreRef = resultadoDB.getString("nombre"); // 👈 obtienes el nombre
-
-	            if (passwordLogin.equals(passRef)) {
-	                return nombreRef; // ✅ devuelves el nombre si el login es correcto
-	            }
+	public List<Empresa> listarEmpresas() {
+	    List<Empresa> lista = new ArrayList<>();
+	    String sql = "SELECT id_empresa, nombre FROM empresas"; // Ajusta los nombres de tus columnas
+	    try (Connection con = ConexionDB.conectar(); 
+	         PreparedStatement ps = con.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+	        while (rs.next()) {
+	            Empresa e = new Empresa();
+	            e.setId_empresa(rs.getInt("id_empresa"));;
+	            e.setNombre(rs.getString("nombre"));
+	            lista.add(e);
 	        }
-
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
-	    return null; // ❌ null significa que falló el login
+	    return lista;
 	}
 	
-	
-	
-	/* public static void eliminarDatos(int ID_evento) {
-		
-		String consultaSQL = "DELETE FROM agendadb.eventos WHERE ID_evento = ?;";
-		
-		try (Connection conexionDB = ConexionDB.conectar(); PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
-			
-			consultaFinal.setInt(1, ID_evento);
-			
-			int numEventos = consultaFinal.executeUpdate();
-			
-			if (numEventos > 0) {
-			
-				System.out.println("Exito ejecutar la consulta ELIMINAR");
-				
-			} else {
-				
-				System.out.println("No se elimino");
-				
-			}
-			
-		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta ELIMINAR");
-			e.printStackTrace();
-			
-			
-		}
-		
-	}
-	
-	public static void editarDatos(String nombre_evento, LocalDate fecha_evento, String descripcion, String prioridad, int ID_evento) {
-		
-		String consultaSQL = "UPDATE agendadb.eventos SET nombre_evento = ?, fecha_evento = ?, descripcion = ?, prioridad = ? WHERE ID_evento = ?;";
-		
-		try (Connection conexionDB = ConexionDB.conectar();
-				PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);
-				ResultSet resultadoDB = consultaFinal.executeQuery()) {
-			
-			consultaFinal.executeUpdate();
-			
-			System.out.println("Exito ejecutar la consulta EDITAR");
-			
-		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta EDITAR");
-			e.printStackTrace();
-			
-			
-		}
-		
-	} */
-	
-	
-
 }
+	
+	
+	
+	

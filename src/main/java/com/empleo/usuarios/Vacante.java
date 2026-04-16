@@ -18,7 +18,7 @@ public class Vacante {
 		
 	}
 	
-	public Vacante (int id, String titulo, String descripcion, String modalidad, BigDecimal salario, String estado, Date fechaLimite) {
+	public Vacante (int id, int idEmpresa, String titulo, String descripcion, BigDecimal salario, String estado, Date fechaLimite) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;

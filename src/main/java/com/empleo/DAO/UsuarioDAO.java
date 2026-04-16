@@ -54,6 +54,7 @@ public class UsuarioDAO {
 	            if (passwordLogin.equals(passRef)) {
 	            	
 	            	Usuario u = new Usuario(nombreRef, correoRef, passRef, rol_idRef);
+	            	u.setId(resultadoDB.getInt("id_usuario"));
 	            	
 	                return u;
 	            }
@@ -66,60 +67,26 @@ public class UsuarioDAO {
 	    return null;
 	}
 	
-	
-	
-	/* public static void eliminarDatos(int ID_evento) {
-		
-		String consultaSQL = "DELETE FROM agendadb.eventos WHERE ID_evento = ?;";
-		
-		try (Connection conexionDB = ConexionDB.conectar(); PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
-			
-			consultaFinal.setInt(1, ID_evento);
-			
-			int numEventos = consultaFinal.executeUpdate();
-			
-			if (numEventos > 0) {
-			
-				System.out.println("Exito ejecutar la consulta ELIMINAR");
-				
-			} else {
-				
-				System.out.println("No se elimino");
-				
-			}
-			
-		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta ELIMINAR");
-			e.printStackTrace();
-			
-			
-		}
-		
+	public Usuario validar(String correo, String pass) {
+	    Usuario u = null;
+	    String sql = "SELECT * FROM usuarios WHERE correo = ? AND pass = ?";
+	    try (Connection con = ConexionDB.conectar(); 
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        ps.setString(1, correo);
+	        ps.setString(2, pass);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                u = new Usuario();
+	                // ¡ESTA LÍNEA ES LA MÁS IMPORTANTE!
+	                u.setId(rs.getInt("id_usuario"));
+	                u.setNombre(rs.getString("nombre"));
+	                u.setRol_id(rs.getInt("rol_id"));
+	            }
+	        }
+	    } catch (SQLException e) { e.printStackTrace(); }
+	    return u;
 	}
 	
-	public static void editarDatos(String nombre_evento, LocalDate fecha_evento, String descripcion, String prioridad, int ID_evento) {
-		
-		String consultaSQL = "UPDATE agendadb.eventos SET nombre_evento = ?, fecha_evento = ?, descripcion = ?, prioridad = ? WHERE ID_evento = ?;";
-		
-		try (Connection conexionDB = ConexionDB.conectar();
-				PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);
-				ResultSet resultadoDB = consultaFinal.executeQuery()) {
-			
-			consultaFinal.executeUpdate();
-			
-			System.out.println("Exito ejecutar la consulta EDITAR");
-			
-		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta EDITAR");
-			e.printStackTrace();
-			
-			
-		}
-		
-	} */
 	
 	
-
 }
