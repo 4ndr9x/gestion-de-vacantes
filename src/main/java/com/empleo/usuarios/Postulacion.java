@@ -19,6 +19,10 @@ public class Postulacion {
 		this.estatus = estatus;
 	}
 
+	public Postulacion() {
+		
+	}
+
 	public int getId() {
 		return id;
 	}

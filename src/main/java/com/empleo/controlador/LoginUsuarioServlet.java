@@ -14,8 +14,7 @@ public class LoginUsuarioServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
 
-    // esto lo coloco pa arreglar el bug de registrarse
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

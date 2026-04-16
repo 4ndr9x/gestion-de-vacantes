@@ -225,7 +225,42 @@ public class PostulacionDAO {
         return actualizada;
     }
 
-	
+    public List<Postulacion> listarPorUsuario(int idUsuario) {
+
+        List<Postulacion> postulaciones = new ArrayList<>();
+
+        String sql = "SELECT p.id as id_postulacion,p.id_vacante,p.id_usuario, p.fecha_postulacion, p.estatus FROM postulaciones p INNER JOIN vacantes v ON p.id_vacante= v.id INNER JOIN usuarios u ON p.id_usuario=u.id";
+
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idUsuario);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                int idPost = rs.getInt("id_postulacion");
+                int idVacante = rs.getInt("id_vacante");
+                int idUsuarioDb = rs.getInt("id_usuario");
+                Date fecha = rs.getDate("fecha_postulacion");
+                String status = rs.getString("estatus");
+
+                Vacante vacante = new Vacante();
+                vacante.setId(idVacante);
+
+                Usuario usuario = new Usuario();
+                usuario.setId(idUsuarioDb);
+
+                postulaciones.add(new Postulacion(idPost, vacante, usuario, fecha, status));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postulaciones;
+    }
 	
 	
 }
