@@ -21,7 +21,7 @@ INSERT INTO proyectofinal.roles (nombre) VALUES ('administrador');
 
 CREATE TABLE usuarios (
 
-id int primary key auto_increment,
+id_usuario int primary key auto_increment,
 nombre varchar(50) not null,
 correo varchar(50)  not null UNIQUE,
 pass varchar(25) not null,
@@ -34,7 +34,7 @@ FOREIGN KEY (rol_id) REFERENCES roles(id)
 
 CREATE TABLE empresas (
 
-id int primary key auto_increment,
+id_empresa int primary key auto_increment,
 nombre varchar(20) not null,
 correo varchar(50) not null UNIQUE,
 RNC varchar(20) not null,
@@ -47,7 +47,7 @@ estado ENUM('activa','desactiva') default 'activa'
 
 CREATE TABLE vacantes (
 
-id int primary key auto_increment,
+id_vacantes int primary key auto_increment,
 id_empresa int NOT NULL,
 titulo varchar(20) not null,
 descripcion varchar(150),
@@ -55,7 +55,7 @@ salario decimal (10,2) not null,
 estado ENUM('activa', 'finalizada') default 'activa',
 fecha_limite date,
 
-FOREIGN KEY (id_empresa) REFERENCES empresas(id)
+FOREIGN KEY (id_empresa) REFERENCES empresas(id_empresa)
 
 );
 
@@ -63,14 +63,14 @@ FOREIGN KEY (id_empresa) REFERENCES empresas(id)
 
 CREATE TABLE postulaciones (
 
-id int primary key auto_increment,
-id_vacante int,
-id_usuario int,
+id_postulacion int primary key auto_increment,
+id_vacantes int NOT NULL,
+id_usuario int NOT NULL,
 fecha_postulacion date,
 estatus ENUM('pendiente', 'aceptado', 'rechazado') default 'pendiente',
 
-FOREIGN KEY(id_vacante) REFERENCES vacantes(id),
-FOREIGN KEY(id_usuario) REFERENCES usarios (id)
+FOREIGN KEY(id_vacantes) REFERENCES vacantes(id_vacantes),
+FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario)
 
 );
 
@@ -78,12 +78,12 @@ FOREIGN KEY(id_usuario) REFERENCES usarios (id)
 
 CREATE TABLE contrataciones (
 
-id int primary key auto_increment,
+id_contratacion int primary key auto_increment,
 id_postulacion int,
 fecha_contrato date,
 comision decimal(10,2),
 
-FOREIGN KEY(id_postulacion) REFERENCES postulaciones(id)
+FOREIGN KEY(id_postulacion) REFERENCES postulaciones(id_postulacion)
 );
 
 -- 1. Crear el usuario para la conexión de la aplicación (cambia la contraseña por una de tu preferencia)
