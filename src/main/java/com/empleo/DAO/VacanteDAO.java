@@ -1,0 +1,144 @@
+package com.empleo.DAO;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.DriverManager;
+
+import com.empleo.usuarios.Vacante;
+
+public class VacanteDAO {
+	
+	private String bddUrl = "";
+	private String bddUser = "root";
+	private String bddPass = "";
+	
+	
+	private static final String insertDatos =
+			"INSERT INTO vacantes (id_empresa, titulo, descripcion, salario, estado, fecha_limite) VALUES (?,?,?,?,?,?)";
+	private static final String selectTitulo = "SELECT titulo from vacantes";
+	private static final String deleteVacante = "DELETE from vacantes where id = ?;";
+	private static final String updateVacante =
+			"UPDATE vacantes SET titulo = ?, descripcion = ?, salario = ?, estado = ?, fecha_limite = ? WHERE id = ?";
+	
+	protected Connection getConnection() {
+		Connection con = null;
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(bddUrl, bddUser, bddPass);
+		
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+		return con;
+	}
+	
+	public void insertarVacantes(Vacante vacante) {
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement(insertDatos)) {
+
+	        ps.setInt(1, vacante.getIdEmpresa());
+	        ps.setString(2, vacante.getTitulo());
+	        ps.setString(3, vacante.getDescripcion());
+	        ps.setBigDecimal(4, vacante.getSalario());
+	        ps.setString(5, vacante.getEstado());
+	        ps.setDate(6, vacante.getFechaLimite());
+
+	        ps.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public List<Vacante> listarVacantes() {
+	    List<Vacante> lista = new ArrayList<>();
+
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement("SELECT * FROM vacantes");
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            Vacante v = new Vacante();
+	            v.setId(rs.getInt("id"));
+	            v.setIdEmpresa(rs.getInt("id_empresa"));
+	            v.setTitulo(rs.getString("titulo"));
+	            v.setDescripcion(rs.getString("descripcion"));
+	            v.setSalario(rs.getBigDecimal("salario"));
+	            v.setEstado(rs.getString("estado"));
+	            v.setFechaLimite(rs.getDate("fecha_limite"));
+	            
+	            lista.add(v);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+	}
+	
+	public List<String> listarTitulos() {
+	    List<String> titulos = new ArrayList<>();
+
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement(selectTitulo);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            titulos.add(rs.getString("titulo"));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return titulos;
+	}
+	
+	public void eliminarVacante(int id) {
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement(deleteVacante)) {
+
+	        ps.setInt(1, id);
+	        ps.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	public void actualizarVacante(Vacante vacante) {
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement(updateVacante)) {
+
+	        ps.setString(1, vacante.getTitulo());
+	        ps.setString(2, vacante.getDescripcion());
+	        ps.setBigDecimal(3, vacante.getSalario());
+	        ps.setString(4, vacante.getEstado());
+	        ps.setDate(5, vacante.getFechaLimite());
+	        ps.setInt(6, vacante.getId());
+
+	        ps.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+}	
+	
+	
+	

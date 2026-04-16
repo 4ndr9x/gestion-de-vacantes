@@ -6,18 +6,19 @@ import java.sql.Date;
 public class Vacante {
 	
 	private int id;
+	private int idEmpresa;
 	private String titulo;
 	private String descripcion;
 	private String estado;
-	private Date fecha_limite;
+	private Date fechaLimite;
 	private BigDecimal salario;
 	
-	public Vacante (int id, String titulo, String descripcion, String modalidad, BigDecimal salario, Date fecha_limite, String estado) {
+	public Vacante (int id, String titulo, String descripcion, BigDecimal salario, Date fechaLimite, String estado) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
 		this.salario = salario;
-		this.fecha_limite = fecha_limite;
+		this.fechaLimite = fechaLimite;
 		this.estado = estado;
 	}
 	
@@ -60,12 +61,23 @@ public class Vacante {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-
-	public Date getFecha_limite() {
-		return fecha_limite;
+	
+	public int getIdEmpresa() {
+		return idEmpresa;
 	}
 
-	public void setFecha_limite(Date fecha_limite) {
-		this.fecha_limite = fecha_limite;
+	public void setIdEmpresa(int idEmpresa) {
+		this.idEmpresa = idEmpresa;
 	}
+
+	public Date getFechaLimite() {
+		return fechaLimite;
+	}
+
+	public void setFechaLimite(Date fechaLimite) {
+		this.fechaLimite = fechaLimite;
+	}
+
+	public Vacante() {}
+	
 }
