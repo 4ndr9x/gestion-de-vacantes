@@ -21,8 +21,7 @@ public class VacanteDAO {
 			"INSERT INTO vacantes (id_empresa, titulo, descripcion, salario, estado, fecha_limite) VALUES (?,?,?,?,?,?)";
 	private static final String selectTitulo = "SELECT titulo from vacantes";
 	private static final String deleteVacante = "DELETE from vacantes where id = ?;";
-	private static final String updateVacante =
-			"UPDATE vacantes SET titulo = ?, descripcion = ?, salario = ?, estado = ?, fecha_limite = ? WHERE id = ?";
+	private static final String updateVacante = "UPDATE vacantes SET titulo = ?, descripcion = ?, salario = ?, estado = ?, fecha_limite = ? WHERE id = ?";
 	
 	protected Connection getConnection() {
 		Connection con = null;
