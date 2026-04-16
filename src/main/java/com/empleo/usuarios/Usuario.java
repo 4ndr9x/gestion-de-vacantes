@@ -2,6 +2,7 @@ package com.empleo.usuarios;
 
 public class Usuario {
 	
+	private int id;
 	private String nombre;
 	private String correo;
 	private String password;
@@ -16,6 +17,24 @@ public class Usuario {
 		
 	}
 	
+	public Usuario() {
+		
+	}
+	
+
+	public int getId() {
+		return id;
+	}
+
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
 
 	public String getNombre() {
 		return nombre;

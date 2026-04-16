@@ -9,8 +9,7 @@ public class Postulacion {
 	private Usuario usuario;
 	private Date fechaPostulacion;
 	private String estatus;
-	
-	
+
 	
 	public Postulacion(int id, Vacante vacante, Usuario usuario, Date fechaPostulacion, String estatus) {
 		this.id = id;

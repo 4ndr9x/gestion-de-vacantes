@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Gestión de Vacantes</title>
+<title>Gestor de Vacantes</title>
 
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -55,7 +55,7 @@ body {
 
 <div class="col-10 p-4">
 
-<h2 class="mb-4">Gestión de Vacantes</h2>
+<h2 class="mb-4">Gestor de Vacantes</h2>
 
 <!-- DASHBOARD -->
 
@@ -81,7 +81,7 @@ body {
         <h3>4</h3>
     </div>
 </div>
-```
+
 
 </div>
 
@@ -147,7 +147,7 @@ body {
         </tr>
     </tbody>
 </table>
-```
+
 
 </div>
 

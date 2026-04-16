@@ -13,7 +13,7 @@ public class Vacante {
 	private Date fechaLimite;
 	private BigDecimal salario;
 	
-	public Vacante (int id, String titulo, String descripcion, BigDecimal salario, Date fechaLimite, String estado) {
+	public Vacante (int id, String titulo, String descripcion, String modalidad, BigDecimal salario, Date fecha_limite, String estado) {
 		this.id = id;
 		this.titulo = titulo;
 		this.descripcion = descripcion;
@@ -77,7 +77,5 @@ public class Vacante {
 	public void setFechaLimite(Date fechaLimite) {
 		this.fechaLimite = fechaLimite;
 	}
-
-	public Vacante() {}
 	
 }
