@@ -8,6 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Portal de Empleo</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
@@ -15,18 +16,35 @@ body {
     background-color: #f4f6f9;
 }
 
-/* Navbar */
+
 .navbar {
     background-color: #0d6efd;
 }
 
 
 .job-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: transform 0.2s;
 }
 
 .job-card:hover {
     transform: scale(1.02);
+}
+
+
+.card-fixed {
+    height: 320px;
+}
+
+
+.descripcion {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 
@@ -38,7 +56,6 @@ body {
 </head>
 
 <body>
-
 
 
 <nav class="navbar navbar-dark px-4">
@@ -69,40 +86,23 @@ body {
     </div>
 </div>
 
-<!-- LISTA DE VACANTES -->
+<!-- VACANTES -->
 <div class="row">
 
     
     <div class="col-md-4 mb-4">
-        <div class="card job-card shadow-sm p-3">
-            <h5>Desarrollador Web</h5>
-            <p class="text-muted">Tech Solutions</p>
+        <div class="card job-card card-fixed shadow-sm p-3">
+            <div>
+                <h5>Desarrollador Web</h5>
+                <p class="text-muted">Tech Solutions</p>
 
-            <span class="badge bg-primary">Santo Domingo</span>
-            <span class="badge bg-success">Tiempo completo</span>
+                <span class="badge bg-primary">Santo Domingo</span>
+                <span class="badge bg-success">Tiempo completo</span>
 
-            <p class="mt-2">
-                Desarrollo de aplicaciones web con HTML, CSS y JavaScript.
-            </p>
-
-            <button class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalPostular">
-                Postularse
-            </button>
-        </div>
-    </div>
-
-    
-    <div class="col-md-4 mb-4">
-        <div class="card job-card shadow-sm p-3">
-            <h5>Diseñador UI/UX</h5>
-            <p class="text-muted">Creative Studio</p>
-
-            <span class="badge bg-primary">Santiago</span>
-            <span class="badge bg-warning text-dark">Medio tiempo</span>
-
-            <p class="mt-2">
-                Diseño de interfaces modernas y experiencia de usuario.
-            </p>
+                <p class="mt-2 descripcion">
+                    Desarrollo de aplicaciones web con HTML, CSS y JavaScript. Se valora experiencia en frameworks modernos.
+                </p>
+            </div>
 
             <button class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalPostular">
                 Postularse
@@ -112,16 +112,39 @@ body {
 
     
     <div class="col-md-4 mb-4">
-        <div class="card job-card shadow-sm p-3">
-            <h5>Analista de Datos</h5>
-            <p class="text-muted">DataCorp</p>
+        <div class="card job-card card-fixed shadow-sm p-3">
+            <div>
+                <h5>Diseñador UI/UX</h5>
+                <p class="text-muted">Creative Studio</p>
 
-            <span class="badge bg-primary">Remoto</span>
-            <span class="badge bg-success">Tiempo completo</span>
+                <span class="badge bg-primary">Santiago</span>
+                <span class="badge bg-warning text-dark">Medio tiempo</span>
 
-            <p class="mt-2">
-                Análisis de datos y generación de reportes.
-            </p>
+                <p class="mt-2 descripcion">
+                    Diseño de interfaces modernas enfocadas en la experiencia del usuario y prototipos interactivos.
+                </p>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalPostular">
+                Postularse
+            </button>
+        </div>
+    </div>
+
+    
+    <div class="col-md-4 mb-4">
+        <div class="card job-card card-fixed shadow-sm p-3">
+            <div>
+                <h5>Analista de Datos</h5>
+                <p class="text-muted">DataCorp</p>
+
+                <span class="badge bg-primary">Remoto</span>
+                <span class="badge bg-success">Tiempo completo</span>
+
+                <p class="mt-2 descripcion">
+                    Análisis de datos, creación de reportes y visualización con herramientas modernas como Power BI.
+                </p>
+            </div>
 
             <button class="btn btn-primary w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalPostular">
                 Postularse
@@ -133,7 +156,6 @@ body {
 
 
 </div>
-
 
 
 <div class="modal fade" id="modalPostular">
@@ -160,7 +182,7 @@ body {
 
 <label>Experiencia</label>
 <textarea class="form-control mb-2"></textarea>
-
+```
 
 </form>
 
