@@ -69,58 +69,89 @@ gestion-de-vacantes/
 
 ## Configuracion de la base de datos
 
-1. Crear la base de datos en MySQL:
+1. Crear la base de datos en MySQL y ejecutar el siguiente script completo:
 
 ```sql
-CREATE DATABASE gestion_vacantes;
-USE gestion_vacantes;
-```
+CREATE DATABASE proyectofinal;
+USE proyectofinal;
 
-2. Crear las tablas principales:
-
-```sql
-CREATE TABLE empresa (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    sector VARCHAR(100),
-    descripcion TEXT
+/* Tabla externa para roles */
+CREATE TABLE roles (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE usuario (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) UNIQUE NOT NULL,
-    contrasena VARCHAR(255) NOT NULL,
-    rol ENUM('admin', 'usuario') DEFAULT 'usuario'
+/* Valores iniciales de roles */
+INSERT INTO proyectofinal.roles (nombre) VALUES ('usuario');
+INSERT INTO proyectofinal.roles (nombre) VALUES ('empresa');
+INSERT INTO proyectofinal.roles (nombre) VALUES ('administrador');
+
+/* Tabla de usuarios con rol asignado */
+CREATE TABLE usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
+    pass VARCHAR(25) NOT NULL,
+    rol_id INT,
+    FOREIGN KEY (rol_id) REFERENCES roles(id)
 );
 
-CREATE TABLE vacante (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+/* Tabla de empresas asociadas */
+CREATE TABLE empresas (
+    id_empresa INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(20) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE,
+    RNC VARCHAR(20) NOT NULL,
+    descripcion VARCHAR(100),
+    estado ENUM('activa', 'desactiva') DEFAULT 'activa'
+);
+
+/* Tabla de vacantes relacionada con empresas */
+CREATE TABLE vacantes (
+    id_vacantes INT PRIMARY KEY AUTO_INCREMENT,
     id_empresa INT NOT NULL,
-    titulo VARCHAR(150) NOT NULL,
-    descripcion TEXT,
-    salario DECIMAL(10,2),
+    titulo VARCHAR(20) NOT NULL,
+    descripcion VARCHAR(150),
+    salario DECIMAL(10,2) NOT NULL,
+    estado ENUM('activa', 'finalizada') DEFAULT 'activa',
     fecha_limite DATE,
-    estado ENUM('Activa', 'Finalizada') DEFAULT 'Activa',
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id)
+    FOREIGN KEY (id_empresa) REFERENCES empresas(id_empresa)
 );
 
-CREATE TABLE postulacion (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+/* Tabla de postulaciones relacionada con usuarios y vacantes */
+CREATE TABLE postulaciones (
+    id_postulacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_vacantes INT NOT NULL,
     id_usuario INT NOT NULL,
-    id_vacante INT NOT NULL,
-    fecha_postulacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
-    FOREIGN KEY (id_vacante) REFERENCES vacante(id)
+    fecha_postulacion DATE,
+    estatus ENUM('pendiente', 'aceptado', 'rechazado') DEFAULT 'pendiente',
+    FOREIGN KEY (id_vacantes) REFERENCES vacantes(id_vacantes),
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
+
+/* Tabla de contrataciones como reporte */
+CREATE TABLE contrataciones (
+    id_contratacion INT PRIMARY KEY AUTO_INCREMENT,
+    id_postulacion INT,
+    fecha_contrato DATE,
+    comision DECIMAL(10,2),
+    FOREIGN KEY (id_postulacion) REFERENCES postulaciones(id_postulacion)
+);
+
+/* Usuario de conexion para la aplicacion */
+CREATE USER 'programa'@'localhost' IDENTIFIED BY 'hola2332';
+GRANT SELECT, INSERT, UPDATE, DELETE ON proyectofinal.* TO 'programa'@'localhost';
+FLUSH PRIVILEGES;
 ```
 
-3. Configurar la conexion en `ConexionDB.java`:
+2. Credenciales de conexion en `ConexionDB.java`:
+
+> ⚠️ **IMPORTANTE:** No mover ni reubicar la clase `ConexionDB.java` dentro del proyecto. El sistema cuenta con su propio usuario de base de datos (`programa`) configurado con permisos especificos. Modificar la ubicacion de esta clase puede romper las referencias internas y la conexion a la base de datos.
 
 ```java
-private static final String URL = "jdbc:mysql://localhost:3306/gestion_vacantes";
-private static final String USER = "tu_usuario";
-private static final String PASSWORD = "tu_contrasena";
+private static final String URL = "jdbc:mysql://localhost:3306/proyectofinal";
+private static final String USER = "programa";
+private static final String PASSWORD = "hola2332";
 ```
 
 ---
