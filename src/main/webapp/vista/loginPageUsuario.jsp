@@ -131,7 +131,6 @@
       <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center mb-1">
           <label class="form-label mb-0 form-label-sm">Contraseña</label>
-          <a href="#" style="font-size:12px; color:#185fa5; text-decoration:none;">¿Olvidaste tu contraseña?</a>
         </div>
         <div class="input-wrapper">
           <svg class="input-icon" style="color: ${not empty requestScope.loginError ? '#e24b4a' : '#aaa'};" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
