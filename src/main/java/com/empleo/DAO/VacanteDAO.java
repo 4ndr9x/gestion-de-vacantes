@@ -1,5 +1,6 @@
 package com.empleo.DAO;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,16 @@ public class VacanteDAO {
 	private static final String selectTitulo = "SELECT titulo from vacantes";
 	private static final String deleteVacante = "DELETE from vacantes where id_vacantes = ?;";
 	private static final String updateVacante = "UPDATE vacantes SET titulo = ?, descripcion = ?, salario = ?, estado = ?, fecha_limite = ? WHERE id_vacantes = ?";
-	
+    private static final String comisionVacante = "SELECT salario FROM proyectofinal.vacantes WHERE id_vacantes = ?;";
+
+	// ── NUEVO: trae vacantes junto con el nombre de la empresa ────────────────
+	private static final String selectConEmpresa =
+			"SELECT v.id_vacantes, v.titulo, v.descripcion, v.salario, v.estado, v.fecha_limite, " +
+			"       v.id_empresa, e.nombre AS nombre_empresa " +
+			"FROM vacantes v " +
+			"JOIN empresas e ON v.id_empresa = e.id_empresa";
+	// ─────────────────────────────────────────────────────────────────────────
+
 	
 	public void insertarVacantes(Vacante vacante) {
 	    try (Connection con = ConexionDB.conectar();
@@ -66,10 +76,42 @@ public class VacanteDAO {
 
 	    return lista;
 	}
+
+	// ── NUEVO ─────────────────────────────────────────────────────────────────
+	/**
+	 * Lista todas las vacantes incluyendo el nombre de la empresa.
+	 * Úsalo en el panel admin para mostrar "Empresa" en vez del ID numérico.
+	 */
+	public List<Vacante> listarVacantesConEmpresa() {
+	    List<Vacante> lista = new ArrayList<>();
+
+	    try (Connection con = ConexionDB.conectar();
+	         PreparedStatement ps = con.prepareStatement(selectConEmpresa);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        while (rs.next()) {
+	            Vacante v = new Vacante();
+	            v.setId(rs.getInt("id_vacantes"));
+	            v.setIdEmpresa(rs.getInt("id_empresa"));
+	            v.setNombreEmpresa(rs.getString("nombre_empresa")); // viene del JOIN
+	            v.setTitulo(rs.getString("titulo"));
+	            v.setDescripcion(rs.getString("descripcion"));
+	            v.setSalario(rs.getBigDecimal("salario"));
+	            v.setEstado(rs.getString("estado"));
+	            v.setFechaLimite(rs.getDate("fecha_limite"));
+	            lista.add(v);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return lista;
+	}
+	// ─────────────────────────────────────────────────────────────────────────
 	
 	public List<Vacante> listarVacantesActivas() {
 	    List<Vacante> lista = new ArrayList<>();
-	    // Ajusta los nombres de las columnas 'id_vacantes' y 'estado' según tu DB
 	    String sql = "SELECT * FROM vacantes WHERE estado = 'activa'";
 
 	    try (Connection con = ConexionDB.conectar();
@@ -144,7 +186,24 @@ public class VacanteDAO {
 	    }
 	}
 	
-}	
-	
-	
-	
+	public BigDecimal obtenerSalarioVacante(int id_vacante) {
+		
+		BigDecimal salario = null;
+		
+		try (Connection con = ConexionDB.conectar();
+				PreparedStatement ps = con.prepareStatement(comisionVacante)) {
+			
+			ps.setInt(1, id_vacante);
+			ResultSet rs = ps.executeQuery();
+			
+			while (rs.next()) {
+	            salario = rs.getBigDecimal("salario");
+	        }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return salario;
+	}
+}

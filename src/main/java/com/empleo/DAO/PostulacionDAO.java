@@ -39,6 +39,7 @@ public class PostulacionDAO {
     private static final String updatePostulaciones = "UPDATE postulaciones \r\n"
     		+ "SET id_vacantes = ?, id_usuario = ?, fecha_postulacion = ?, estatus = ? \r\n"
     		+ "WHERE id_postulacion = ?";
+    private static final String sqlContrato = "DELETE FROM contrataciones WHERE id_postulacion = ?";
     
     public boolean insertarPostulacion(Postulacion postulacion) {
         // Es buena práctica verificar si ya existe una postulación previa para este par Usuario-Vacante
@@ -126,16 +127,22 @@ public class PostulacionDAO {
         return postulaciones;
     }
     
-    public boolean borrarPostulacion(int id) {
-        boolean borrado = false;
-        try(Connection con = ConexionDB.conectar(); PreparedStatement ps = con.prepareStatement(deletePostulaciones)){
-            ps.setInt(1, id);
-            borrado = ps.executeUpdate() > 0;
-        } catch(SQLException e){
-            System.out.println("Error en borrarPostulacion:");
+    public void borrarPostulacion(int idPostulacion) {
+        try (Connection con = ConexionDB.conectar();
+        		PreparedStatement psContrato = con.prepareStatement(sqlContrato);
+                PreparedStatement psPostulacion = con.prepareStatement(deletePostulaciones);) {
+
+        	// borramos al hijo
+            psContrato.setInt(1, idPostulacion);
+            psContrato.executeUpdate();
+
+            // borramos padre
+            psPostulacion.setInt(1, idPostulacion);
+            psPostulacion.executeUpdate();
+            
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return borrado;
     }
     
     public List<Postulacion> buscarPorDato(String buscar){
@@ -200,10 +207,10 @@ public class PostulacionDAO {
 
     public List<Postulacion> listarPorUsuario(int idUsuario) {
         List<Postulacion> postulaciones = new ArrayList<>();
-        String sql = "SELECT p.id as id_postulacion, p.id_vacantes, p.id_usuario, p.fecha_postulacion, p.estatus "
-                   + "FROM postulaciones p "
-                   + "INNER JOIN vacantes v ON p.id_vacantes = v.id "
-                   + "INNER JOIN usuarios u ON p.id_usuario = u.id "
+        String sql = "SELECT p.id_postulacion, p.id_vacantes, p.id_usuario, p.fecha_postulacion, p.estatus "
+                   + "FROM proyectofinal.postulaciones p "
+                   + "INNER JOIN proyectofinal.vacantes v ON p.id_vacantes = v.id_vacantes "
+                   + "INNER JOIN proyectofinal.usuarios u ON p.id_usuario = u.id_usuario "
                    + "WHERE p.id_usuario = ?"; 
 
         try (Connection con = ConexionDB.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -229,5 +236,56 @@ public class PostulacionDAO {
             e.printStackTrace();
         }
         return postulaciones;
+    }
+    
+ // Reemplaza el método obtenerPostulacionesPorUsuario en tu PostulacionDAO.java
+
+    public List<Postulacion> obtenerPostulacionesPorUsuario(int idUsuario) {
+
+        List<Postulacion> lista = new ArrayList<>();
+
+        String sql = """
+                SELECT p.id_postulacion,
+                       p.fecha_postulacion,
+                       p.estatus,
+                       v.id_vacantes,
+                       v.titulo,
+                       e.nombre  AS nombre_empresa,
+                       e.correo  AS correo_empresa
+                FROM postulaciones p
+                JOIN vacantes v ON p.id_vacantes = v.id_vacantes
+                JOIN empresas e ON v.id_empresa  = e.id_empresa
+                WHERE p.id_usuario = ?
+                ORDER BY p.fecha_postulacion DESC
+                """;
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Vacante v = new Vacante();
+                v.setId(rs.getInt("id_vacantes"));
+                v.setTitulo(rs.getString("titulo"));
+                v.setNombreEmpresa(rs.getString("nombre_empresa"));
+                v.setCorreoEmpresa(rs.getString("correo_empresa")); // <-- NUEVO
+
+                Postulacion p = new Postulacion();
+                p.setId(rs.getInt("id_postulacion"));
+                p.setFechaPostulacion(rs.getDate("fecha_postulacion"));
+                p.setEstatus(rs.getString("estatus"));
+                p.setVacante(v);
+
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 }

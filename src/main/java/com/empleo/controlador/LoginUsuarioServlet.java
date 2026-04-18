@@ -36,7 +36,14 @@ public class LoginUsuarioServlet extends HttpServlet {
         u = UsuarioDAO.buscarUsuario(correo, password);
         
         if (u != null) {
-            HttpSession session = request.getSession();
+        	
+        	HttpSession sesionVieja = request.getSession(false);
+        	
+        	if (sesionVieja != null) {
+                sesionVieja.invalidate();
+            }
+	         
+	        HttpSession session = request.getSession(true);
             
             // GUARDAR EN SESSION (No en request)
             session.setAttribute("nombreUsuario", u.getNombre());
@@ -45,8 +52,7 @@ public class LoginUsuarioServlet extends HttpServlet {
             
             if (u.getRol_id() == 3) {
                 session.setAttribute("rol", "admin");
-                // response.sendRedirect(request.getContextPath() + "/vista/paginaPrincipalAdm.jsp"); <-- ANTES
-                response.sendRedirect(request.getContextPath() + "/AdminDashboardServlet"); // <-- AHORA
+                response.sendRedirect(request.getContextPath() + "/AdminDashboardServlet");
             } else {
                 session.setAttribute("rol", "usuario"); // <--- IMPORTANTE
                 System.out.println("Accediste como usuario");

@@ -8,10 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.empleo.DAO.ContratacionDAO;
 import com.empleo.DAO.PostulacionDAO;
 import com.empleo.DAO.VacanteDAO;
+import com.empleo.usuarios.Contratacion;
 import com.empleo.usuarios.Postulacion;
 import com.empleo.usuarios.Usuario;
 import com.empleo.usuarios.Vacante;
@@ -57,12 +60,13 @@ public class PostulacionesServlet extends HttpServlet {
             request.setAttribute("totalV", totalVacantes);
             request.setAttribute("activasV", activas);
             request.setAttribute("cerradasV", cerradas);
+            
 
             request.getRequestDispatcher("vista/admin_postulaciones.jsp").forward(request, response);
             
         } else {
         	
-            lista = dao.listarPorUsuario(idUsuario);
+            lista = dao.obtenerPostulacionesPorUsuario(idUsuario);
             request.setAttribute("postulaciones", lista);
             request.getRequestDispatcher("vista/usuario_postulaciones.jsp").forward(request, response);
         }
@@ -74,6 +78,7 @@ public class PostulacionesServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         String accion = request.getParameter("accion");
+        String estadoCandidato = request.getParameter("estado");
 
         // 1. Validación de sesión única al principio
         if (session == null || session.getAttribute("id_usuario") == null) {
@@ -112,10 +117,42 @@ public class PostulacionesServlet extends HttpServlet {
                     if (p != null) {
                         p.setEstatus(nuevoEstado); 
                         dao.editarPostulacion(p);
+                        
+                        if ("aceptado".equals(estadoCandidato)) {
+                			
+                        	int id_postulacion = Integer.parseInt(idStr);
+                        	java.sql.Date fecha_contrato = new java.sql.Date(System.currentTimeMillis());
+                        	
+                        	VacanteDAO vDao = new VacanteDAO();
+                        	PostulacionDAO pDao = new PostulacionDAO();
+                        	
+                        	Postulacion postulacion = pDao.buscarPorID(id_postulacion);
+                        	BigDecimal comision = vDao.obtenerSalarioVacante(id_postulacion);
+                        	
+                        	Contratacion contratacionNueva = new Contratacion(id_postulacion, postulacion, fecha_contrato, comision);
+                        	ContratacionDAO.registrarContratacion(contratacionNueva.getId());
+                        	
+                        	System.out.println("SE REGISTRO CONTRATACION EXITOSAMENTE");
+                        	
+                		} else if ("rechazado".equals(estadoCandidato)) {
+                		    
+                		    int contratacionHecha = ContratacionDAO.comprobarContratacion(id);
+                		    
+                		    if (contratacionHecha != 0) {
+
+                		        ContratacionDAO.eliminarContratacion(contratacionHecha);
+                		        
+                		    } else {
+                		    	
+                		    }
+                		}
+                		
                     }
+                    
                 } else if ("eliminar".equals(accion) && idStr != null) {
                     int id = Integer.parseInt(idStr);
                     dao.borrarPostulacion(id);
+                    
                 }
                 
                 // Después de editar o eliminar, el admin vuelve a la lista
@@ -126,10 +163,10 @@ public class PostulacionesServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         // 3. Fallback: Si no entró en ninguna de las acciones anteriores,
         // redirigimos a una página segura para evitar que la página se quede en blanco.
         if (!response.isCommitted()) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            response.sendRedirect(request.getContextPath() + "/LoginUsuarioServlet");
         }
     }}

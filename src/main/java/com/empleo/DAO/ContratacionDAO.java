@@ -1,33 +1,22 @@
 package com.empleo.DAO;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.empleo.usuarios.Contratacion;
 
 public class ContratacionDAO {
 	
-	public static void registrarContratacion(int id_postulacion, Date fecha_contrato, BigDecimal comision) {
+	public static void registrarContratacion(int id_postulacion) {
 		
-		String consultaSQL = "INSERT INTO contrataciones (id_postulacion, fecha_contrato, comision)\\r\\n\"\r\n"
-				+ "	    		+ \"SELECT \\r\\n\"\r\n"
-				+ "	    		+ \"p.id_postulacion,\\r\\n\"\r\n"
-				+ "	    		+ \"CURDATE(),\\r\\n\"\r\n"
-				+ "	    		+ \"v.salario * 0.20\\r\\n\"\r\n"
-				+ "	    		+ \"FROM postulaciones p\\r\\n\"\r\n"
-				+ "	    		+ \"JOIN vacantes v ON p.id_vacantes = v.id_vacantes\\r\\n\"\r\n"
-				+ "	    		+ \"WHERE p.id_postulacion = ?;;";
+		String consultaSQL = "INSERT INTO contrataciones (id_postulacion, fecha_contrato, comision) SELECT p.id_postulacion, CURDATE(), (v.salario * 0.20) FROM postulaciones p JOIN vacantes v ON p.id_vacantes = v.id_vacantes WHERE p.id_postulacion = ?;";
 		
 		try (Connection conexionDB = ConexionDB.conectar();
 				PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
 			
-			consultaFinal.setInt(1, id_postulacion);
-			consultaFinal.setDate(2, fecha_contrato);
-			consultaFinal.setBigDecimal(3, comision);
-			
+			consultaFinal.setInt(1, id_postulacion);			
 			consultaFinal.executeUpdate();
 			
 			System.out.println("Exito ejecutar la consulta REGISTRAR CONTRATACIONES");
@@ -41,7 +30,7 @@ public class ContratacionDAO {
 		
 	}
 	
-	public static Contratacion buscarContratacion(int id_contrataciones) {
+	public static Contratacion buscarContratacion(int id_contratacion) {
 
 	    String consultaSQL = "SELECT u.nombre, u.correo, v.titulo, e.nombre, c.fecha_contrato, c.comision FROM proyectofinal.contrataciones AS c \r\n"
 	    		+ "INNER JOIN proyectofinal.postulaciones AS p ON p.id_postulacion = c.id_postulacion\r\n"
@@ -53,7 +42,7 @@ public class ContratacionDAO {
 	    try (Connection conexionDB = ConexionDB.conectar();
 	         PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
 
-	        consultaFinal.setInt(1, id_contrataciones);
+	        consultaFinal.setInt(1, id_contratacion);
 	        consultaFinal.executeQuery();
 
 	    } catch (SQLException e) {
@@ -63,59 +52,46 @@ public class ContratacionDAO {
 	    return null;
 	}
 	
-	
-	
-	/* public static void eliminarDatos(int ID_evento) {
+	public static void eliminarContratacion(int id_contratacion) {
 		
-		String consultaSQL = "DELETE FROM agendadb.eventos WHERE ID_evento = ?;";
+		String consultaSQL = "DELETE FROM proyectofinal.contrataciones WHERE id_contratacion = ?;";
 		
-		try (Connection conexionDB = ConexionDB.conectar(); PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
+		try (Connection conexionDB = ConexionDB.conectar();
+				PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);) {
 			
-			consultaFinal.setInt(1, ID_evento);
-			
-			int numEventos = consultaFinal.executeUpdate();
-			
-			if (numEventos > 0) {
-			
-				System.out.println("Exito ejecutar la consulta ELIMINAR");
-				
-			} else {
-				
-				System.out.println("No se elimino");
-				
-			}
+			consultaFinal.setInt(1, id_contratacion);
+			consultaFinal.executeUpdate();
+			System.out.println("Exito ejecutar la consulta ELIMINAR CONTRATACIONES");
 			
 		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta ELIMINAR");
-			e.printStackTrace();
-			
-			
+			// TODO: handle exception
 		}
 		
 	}
 	
-	public static void editarDatos(String nombre_evento, LocalDate fecha_evento, String descripcion, String prioridad, int ID_evento) {
+	
+	public static int comprobarContratacion(int id_contratacion) {
 		
-		String consultaSQL = "UPDATE agendadb.eventos SET nombre_evento = ?, fecha_evento = ?, descripcion = ?, prioridad = ? WHERE ID_evento = ?;";
+		int id_encontrada = 0;
+		String consultaSQL = "SELECT * FROM proyectofinal.contrataciones;";
 		
-		try (Connection conexionDB = ConexionDB.conectar();
-				PreparedStatement consultaFinal = conexionDB.prepareStatement(consultaSQL);
-				ResultSet resultadoDB = consultaFinal.executeQuery()) {
+		try (Connection con = ConexionDB.conectar();
+				PreparedStatement ps = con.prepareStatement(consultaSQL);
+						ResultSet rs = ps.executeQuery();) {
 			
-			consultaFinal.executeUpdate();
+			while (rs.next()) {
+	            id_encontrada = rs.getInt("id_contratacion");
+	        }
 			
-			System.out.println("Exito ejecutar la consulta EDITAR");
 			
 		} catch (SQLException e) {
-			
-			System.out.println("Error al ejecutar la consulta EDITAR");
 			e.printStackTrace();
-			
-			
 		}
 		
-	} */
+		
+		return id_encontrada;
+		
+	}
 	
 	
 

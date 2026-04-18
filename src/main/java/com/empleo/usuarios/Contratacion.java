@@ -7,13 +7,13 @@ public class Contratacion {
 
 	private int id;
 	private Postulacion postulacion;
-	private Date fechaContratoDate;
+	private Date fechaContrato;
 	private BigDecimal comision;
 	
-	public Contratacion(int id, Postulacion postulacion, Date fechaContratoDate, BigDecimal comision) {
+	public Contratacion(int id, Postulacion postulacion, Date fechaContrato, BigDecimal comision) {
 		this.id = id;
 		this.postulacion = postulacion;
-		this.fechaContratoDate = fechaContratoDate;
+		this.fechaContrato = fechaContrato;
 		this.comision = comision;
 	}
 	
@@ -29,11 +29,11 @@ public class Contratacion {
 	public void setPostulacion(Postulacion postulacion) {
 		this.postulacion = postulacion;
 	}
-	public Date getFechaContratoDate() {
-		return fechaContratoDate;
+	public Date getFechaContrato() {
+		return fechaContrato;
 	}
-	public void setFechaContratoDate(Date fechaContratoDate) {
-		this.fechaContratoDate = fechaContratoDate;
+	public void setFechaContrato(Date fechaContrato) {
+		this.fechaContrato = fechaContrato;
 	}
 	public BigDecimal getComision() {
 		return comision;
