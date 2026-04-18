@@ -71,7 +71,7 @@
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th>#</th>
+                       
                         <th>Empresa</th>
                         <th>Vacante</th>
                         <th>Fecha de Aplicación</th>
@@ -82,7 +82,6 @@
                 <tbody>
                     <c:forEach var="p" items="${postulaciones}">
                         <tr>
-                            <td>${p.id}</td>
                             <td>${p.vacante.nombreEmpresa}</td>
                             <td>${p.vacante.titulo}</td>
                             <td>${p.fechaPostulacion}</td>

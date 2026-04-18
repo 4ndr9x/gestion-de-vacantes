@@ -71,9 +71,26 @@ body { background-color: #f4f6f9; }
 
         <%-- SECCIÓN: VACANTES--%>
 
+        <%-- SECCIÓN: VACANTES--%>
         <div id="secVacantes" class="section">
-
             <h2 class="mb-4">Gestión de Vacantes</h2>
+
+            <%-- TARJETAS DE RESUMEN (DASHBOARD) --%>
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-success text-white shadow-sm h-100">
+                        <div class="card-body">
+                            <h6 class="card-title text-uppercase text-white-50 fw-bold">Comisiones Totales</h6>
+                            <h3 class="mb-0">
+                                <%-- Usamos fmt para darle formato de moneda. Si está vacío, muestra 0.00 --%>
+                                <fmt:formatNumber value="${not empty totalComisiones ? totalComisiones : 0}" type="currency" currencySymbol="RD$ " />
+                            </h3>
+                            <small>Ganancias por contrataciones</small>
+                        </div>
+                    </div>
+                </div>
+                <%-- Puedes agregar más tarjetas aquí en el futuro (ej. Total de Vacantes, Total Empresas) --%>
+            </div>
 
             <div class="card p-3 mb-3 shadow-sm">
                 <div class="row">

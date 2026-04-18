@@ -207,13 +207,14 @@ body {
 		                        <fmt:formatNumber value="${v.salario}" type="currency" currencySymbol="RD$ " />
 		                    </span>
 		
-		                    <button type="button"
-		                        class="btn btn-primary btn-sm btn-postular"
-		                        data-bs-toggle="modal"
-		                        data-bs-target="#modalPostular"
-		                        onclick="prepararPostulacion('${v.id}', '${v.titulo}')">
-		                        Postularse
-		                    </button>
+						<button type="button"
+						    class="btn btn-primary btn-sm btn-postular"
+						    data-bs-toggle="modal"
+						    data-bs-target="#modalPostular"
+						    data-id="${v.id}"
+						    data-titulo="${v.titulo}">
+						    Postularse
+						</button>
 		                </div>
 		
 		            </div>
@@ -241,7 +242,7 @@ body {
                             <strong>Aviso:</strong> Necesitas iniciar sesión para poder postularte.
                         </div>
                     </c:if>
-                    <p>¿Confirmas tu postulación a <strong id="tituloVacante"></strong>?</p>
+                    <p>¿Confirmas tu postulación<strong id="tituloVacante"></strong>?</p>
                 </div>
 
                 <div class="modal-footer">
@@ -255,15 +256,27 @@ body {
         	</div>
     	</div>
 	</div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function prepararPostulacion(id, titulo) {
-    document.getElementById('postularVacanteId').value = id;
-    document.getElementById('tituloVacante').innerText = titulo;
-    document.getElementById('modalPostularLabel').innerText = "Postularse a: " + titulo;
-}
+    document.addEventListener('DOMContentLoaded', function () {
+        var modalPostular = document.getElementById('modalPostular');
+        
+        if (modalPostular) {
+            modalPostular.addEventListener('show.bs.modal', function (event) {
+                // El botón que activó el modal
+                var button = event.relatedTarget;
+                
+                // Extraer la información de los atributos data-*
+                var idVacante = button.getAttribute('data-id');
+                var titulo = button.getAttribute('data-titulo');
+                
+                // Actualizar el contenido del modal y el input oculto
+                document.getElementById('postularVacanteId').value = idVacante;
+                document.getElementById('tituloVacante').innerText = " " + titulo;
+            });
+        }
+    });
 </script>
 
 </body>

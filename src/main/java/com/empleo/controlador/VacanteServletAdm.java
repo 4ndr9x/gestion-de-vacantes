@@ -103,11 +103,15 @@ public class VacanteServletAdm extends HttpServlet {
         VacanteDAO vacanteDAO = new VacanteDAO();
         EmpresaDAO empresaDAO = new EmpresaDAO();
         
+        BigDecimal totalComisiones = vacanteDAO.obtenerComisionesTotales();
+        
         // Vacantes con nombre de empresa para mostrar en la tabla
         List<Vacante> listaVacantes = vacanteDAO.listarVacantesConEmpresa();
 
         // Lista de empresas para el combobox del formulario
         List<Empresa> listaEmpresas = empresaDAO.listarEmpresas();
+        
+        request.setAttribute("totalComisiones", totalComisiones);
         
         request.setAttribute("listaVacantes", listaVacantes);
         request.setAttribute("listaEmpresas", listaEmpresas);

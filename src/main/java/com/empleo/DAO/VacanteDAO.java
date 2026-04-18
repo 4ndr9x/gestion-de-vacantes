@@ -206,4 +206,30 @@ public class VacanteDAO {
 		
 		return salario;
 	}
+	
+	public BigDecimal obtenerComisionesTotales() {
+	    BigDecimal total = null;
+
+	    String sql = "SELECT SUM(comision) AS total_comision\r\n"
+	    		+ "FROM proyectofinal.contrataciones AS c\r\n"
+	    		+ "INNER JOIN proyectofinal.postulaciones AS p\r\n"
+	    		+ "	ON c.id_postulacion = p.id_postulacion\r\n"
+	    		+ "    WHERE p.estatus = 'aceptado';";
+
+	    try (Connection conn = ConexionDB.conectar();
+	         PreparedStatement ps = conn.prepareStatement(sql);
+	         ResultSet rs = ps.executeQuery()) {
+
+	        if (rs.next()) {
+	            total = rs.getBigDecimal("total_comision");
+	        }
+
+	    } catch (SQLException e) {
+	        System.out.println("Error al obtener comisiones: " + e.getMessage());
+	    }
+
+	    return total;
+	}
+	
 }
+

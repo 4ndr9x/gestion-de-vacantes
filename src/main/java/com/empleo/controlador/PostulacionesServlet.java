@@ -92,7 +92,15 @@ public class PostulacionesServlet extends HttpServlet {
         try {
             // CASO: POSTULARSE (Para Usuarios)
             if ("postularse".equals(accion)) {
-                int idVacante = Integer.parseInt(request.getParameter("idVacante"));
+                String idVacanteParam = request.getParameter("idVacante");
+                
+                // Validación para evitar NumberFormatException
+                if (idVacanteParam == null || idVacanteParam.trim().isEmpty()) {
+                    response.sendRedirect(request.getContextPath() + "/UsuarioDashboardServlet?msg=error");
+                    return;
+                }
+                
+                int idVacante = Integer.parseInt(idVacanteParam);
                 int idUser = (int) session.getAttribute("id_usuario");
 
                 Vacante v = new Vacante(); v.setId(idVacante);
@@ -105,67 +113,61 @@ public class PostulacionesServlet extends HttpServlet {
                 } else {
                     response.sendRedirect(request.getContextPath() + "/UsuarioDashboardServlet?msg=error");
                 }
-                return; // <--- CRÍTICO: Evita que el código siga bajando
+                return; // CRÍTICO: Evita que el código siga bajando
             }
 
             // ACCIONES SOLO PARA ADMIN
             if ("admin".equals(rol)) {
-                if ("editar".equals(accion) && idStr != null) {
+                
+                // Agregamos !idStr.trim().isEmpty() para proteger el parseInt
+                if ("editar".equals(accion) && idStr != null && !idStr.trim().isEmpty()) {
                     int id = Integer.parseInt(idStr);
                     String nuevoEstado = request.getParameter("estado");
                     Postulacion p = dao.buscarPorID(id);
+                    
                     if (p != null) {
                         p.setEstatus(nuevoEstado); 
                         dao.editarPostulacion(p);
                         
                         if ("aceptado".equals(estadoCandidato)) {
-                			
-                        	int id_postulacion = Integer.parseInt(idStr);
-                        	java.sql.Date fecha_contrato = new java.sql.Date(System.currentTimeMillis());
-                        	
-                        	VacanteDAO vDao = new VacanteDAO();
-                        	PostulacionDAO pDao = new PostulacionDAO();
-                        	
-                        	Postulacion postulacion = pDao.buscarPorID(id_postulacion);
-                        	BigDecimal comision = vDao.obtenerSalarioVacante(id_postulacion);
-                        	
-                        	Contratacion contratacionNueva = new Contratacion(id_postulacion, postulacion, fecha_contrato, comision);
-                        	ContratacionDAO.registrarContratacion(contratacionNueva.getId());
-                        	
-                        	System.out.println("SE REGISTRO CONTRATACION EXITOSAMENTE");
-                        	
-                		} else if ("rechazado".equals(estadoCandidato)) {
-                		    
-                		    int contratacionHecha = ContratacionDAO.comprobarContratacion(id);
-                		    
-                		    if (contratacionHecha != 0) {
-
-                		        ContratacionDAO.eliminarContratacion(contratacionHecha);
-                		        
-                		    } else {
-                		    	
-                		    }
-                		}
-                		
+                            int id_postulacion = id; // Reutilizamos la variable segura 'id'
+                            java.sql.Date fecha_contrato = new java.sql.Date(System.currentTimeMillis());
+                            
+                            VacanteDAO vDao = new VacanteDAO();
+                            PostulacionDAO pDao = new PostulacionDAO();
+                            
+                            Postulacion postulacion = pDao.buscarPorID(id_postulacion);
+                            BigDecimal comision = vDao.obtenerSalarioVacante(id_postulacion);
+                            
+                            Contratacion contratacionNueva = new Contratacion(id_postulacion, postulacion, fecha_contrato, comision);
+                            ContratacionDAO.registrarContratacion(contratacionNueva.getId());
+                            
+                            System.out.println("SE REGISTRO CONTRATACION EXITOSAMENTE");
+                            
+                        } else if ("rechazado".equals(estadoCandidato)) {
+                            int contratacionHecha = ContratacionDAO.comprobarContratacion(id);
+                            if (contratacionHecha != 0) {
+                                ContratacionDAO.eliminarContratacion(contratacionHecha);
+                            }
+                        }
                     }
                     
-                } else if ("eliminar".equals(accion) && idStr != null) {
+                // Agregamos !idStr.trim().isEmpty() aquí también
+                } else if ("eliminar".equals(accion) && idStr != null && !idStr.trim().isEmpty()) {
                     int id = Integer.parseInt(idStr);
                     dao.borrarPostulacion(id);
-                    
                 }
                 
                 // Después de editar o eliminar, el admin vuelve a la lista
                 response.sendRedirect(request.getContextPath() + "/PostulacionesServlet");
-                return; // <--- CRÍTICO: Evita que el código siga bajando
+                return; // CRÍTICO: Evita que el código siga bajando
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        // 3. Fallback: Si no entró en ninguna de las acciones anteriores,
-        // redirigimos a una página segura para evitar que la página se quede en blanco.
+        // 3. Fallback: Si no entró en ninguna de las acciones anteriores
         if (!response.isCommitted()) {
             response.sendRedirect(request.getContextPath() + "/LoginUsuarioServlet");
         }
