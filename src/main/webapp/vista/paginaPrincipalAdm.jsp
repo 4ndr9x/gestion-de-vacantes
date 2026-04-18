@@ -55,7 +55,7 @@ body { background-color: #f4f6f9; }
     <%-- ===== SIDEBAR ===== --%>
     <div class="col-2 sidebar d-flex flex-column justify-content-between">
         <div>
-            <h4 class="text-center mb-4">Admin</h4>
+            <h4 class="text-center mb-4">TalentHub</h4>
             <a href="#" onclick="mostrarSeccion('vacantes')" id="linkVacantes">Vacantes</a>
             <a href="#" onclick="mostrarSeccion('empresas')" id="linkEmpresas">Empresas</a>
             <a href="${pageContext.request.contextPath}/PostulacionesServlet">Postulaciones</a>
@@ -73,7 +73,7 @@ body { background-color: #f4f6f9; }
 
         <%-- SECCIÓN: VACANTES--%>
         <div id="secVacantes" class="section">
-            <h2 class="mb-4">Gestión de Vacantes</h2>
+            <h2 class="mb-4">Panel Administrativo - Bienvenido, ${sessionScope.nombreUsuario}</h2>
 
             <%-- TARJETAS DE RESUMEN (DASHBOARD) --%>
             <div class="row mb-4">

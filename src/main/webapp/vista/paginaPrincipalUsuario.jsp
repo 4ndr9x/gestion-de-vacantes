@@ -111,7 +111,7 @@ body {
         
         <div class="col-md-2 sidebar d-flex flex-column justify-content-between">
             <div>
-                <h4 class="text-center mb-4 text-white">Menú de Opciones</h4>
+                <h4 class="text-center mb-4 text-white">TalentHub</h4>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.nombreUsuario}">
@@ -141,7 +141,7 @@ body {
 
             <%-- Saludo personalizado si hay sesión --%>
             <c:if test="${not empty sessionScope.nombreUsuario}">
-                <h2 class="text-primary mb-4">Bienvenido, ${sessionScope.nombreUsuario}</h2>
+                <h2 class="text-primary mb-4">Bienvenido/a, ${sessionScope.nombreUsuario}</h2>
             </c:if>
 
             <!--<div class="row mb-4">
@@ -168,15 +168,15 @@ body {
 
             <div class="row">
             
-<%-- Mensaje si no hay vacantes --%>
-<c:if test="${empty vacantesDisponibles}">
-    <div class="col-12 text-center mt-5">
-        <h2 class="text-primary mb-4">No existen vacantes disponibles actualmente.</h2>
-        <p class="text-muted">Vuelve a revisar más tarde.</p>
-    </div>
-</c:if>
-
-<%-- Grid de Vacantes --%>
+		<%-- Mensaje si no hay vacantes --%>
+		<c:if test="${empty vacantesDisponibles}">
+		    <div class="col-12 text-center mt-5">
+		        <h2 class="text-primary mb-4">No existen vacantes disponibles actualmente.</h2>
+		        <p class="text-muted">Vuelve a revisar más tarde.</p>
+		    </div>
+		</c:if>
+		
+		<%-- Grid de Vacantes --%>
 		<div class="row">
 		    <c:forEach var="v" items="${vacantesDisponibles}">
 		        <div class="col-md-6 col-lg-4 mb-4">
@@ -256,10 +256,10 @@ body {
         	</div>
     	</div>
 	</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+    	document.addEventListener('DOMContentLoaded', function () {
         var modalPostular = document.getElementById('modalPostular');
         
         if (modalPostular) {

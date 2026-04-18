@@ -53,7 +53,7 @@
     <%-- ===== SIDEBAR ===== --%>
     <div class="col-2 sidebar d-flex flex-column justify-content-between">
         <div>
-            <h4 class="text-center">Gestion de vacantes</h4>
+            <h4 class="text-center">TalentHub</h4>
             <a href="${pageContext.request.contextPath}/UsuarioDashboardServlet">Vacantes disponibles</a>
         </div>
         <a href="${pageContext.request.contextPath}/LogoutServlet" class="btn-logout">

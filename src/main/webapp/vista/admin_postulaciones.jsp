@@ -43,7 +43,7 @@
 
         <div class="col-2 sidebar">
             <div>
-                <h4 class="text-center mb-4">Panel Admin</h4>
+                <h4 class="text-center mb-4">TalentHub</h4>
                 <a href="${pageContext.request.contextPath}/VacanteServletAdm">Gestionar Vacantes</a>
                 <a href="${pageContext.request.contextPath}/PostulacionesServlet">Ver Postulaciones</a>
             </div>
